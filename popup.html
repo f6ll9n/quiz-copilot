@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="popup.css" />
+    <title>Quiz Copilot</title>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span class="logo">✓</span>
+        <div class="titles">
+          <h1>Quiz Copilot <span class="ver" id="ver"></span></h1>
+          <p id="hint">Выключен</p>
+        </div>
+      </div>
+      <label class="switch" title="Alt+Q">
+        <input type="checkbox" id="enabled" />
+        <span class="slider"></span>
+      </label>
+    </header>
+
+    <section class="card">
+      <label class="check">
+        <input type="checkbox" id="autoPick" />
+        <span>Автовыбор ответа</span>
+      </label>
+      <p class="note">Если выключено — над вариантами просто появляются бейджи, клик по бейджу выбирает ответ.</p>
+
+      <div class="range-row">
+        <label for="minConfidence">Порог уверенности</label>
+        <output id="confOut">60%</output>
+      </div>
+      <input type="range" id="minConfidence" min="0" max="1" step="0.05" />
+    </section>
+
+    <section class="actions">
+      <button id="rescan" class="primary">Пересканировать страницу</button>
+      <div class="row">
+        <button id="ask" class="ghost">Спросить по выделенному</button>
+        <button id="test" class="ghost">Проверить связь</button>
+      </div>
+    </section>
+
+    <button id="diag" class="ghost full">Диагностика страницы</button>
+
+    <p id="status" class="status"></p>
+
+    <details class="settings">
+      <summary>Подключение к модели</summary>
+      <label class="field">
+        <span>Быстрая настройка</span>
+        <select id="preset">
+          <option value="">— выбрать сервис —</option>
+          <option value="lmstudio">LM Studio (локально)</option>
+          <option value="gemini">Google AI Studio (Gemini)</option>
+          <option value="github">GitHub Models (free)</option>
+          <option value="deepseek">DeepSeek API</option>
+          <option value="mistral">Mistral API</option>
+          <option value="openrouter">OpenRouter (free-модели)</option>
+          <option value="groq">Groq (free tier)</option>
+          <option value="cerebras">Cerebras (free tier)</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Endpoint (OpenAI-совместимый)</span>
+        <input id="endpoint" type="text" spellcheck="false" placeholder="http://localhost:1234/v1" />
+      </label>
+      <label class="field">
+        <span>Модель</span>
+        <input id="model" type="text" spellcheck="false" list="models" placeholder="первая загруженная" />
+        <datalist id="models"></datalist>
+      </label>
+      <label class="field">
+        <span>API-ключ (необязательно)</span>
+        <input id="apiKey" type="password" spellcheck="false" placeholder="lm-studio" />
+      </label>
+      <p class="note">LM Studio → Developer → Start Server. Скрипт ходит в <code>/chat/completions</code>.</p>
+      <button id="clearCache" class="ghost full">Очистить кэш ответов</button>
+    </details>
+
+    <footer>Alt+Q — включить/выключить · для тренировочных тестов</footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

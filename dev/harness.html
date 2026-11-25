@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Quiz Copilot — dev harness</title>
+    <style>
+      body {
+        font: 16px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 20px;
+        background: #fff;
+        color: #111;
+      }
+      .q { margin-bottom: 34px; }
+      .title { font-weight: 600; margin-bottom: 10px; }
+      label { display: block; padding: 6px 0 6px 4px; }
+      .opt { display: flex; align-items: center; gap: 8px; }
+      .dot {
+        width: 14px;
+        height: 14px;
+        border: 1.5px solid #94a3b8;
+        border-radius: 50%;
+        display: inline-block;
+        flex: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Тест по географии</h2>
+
+    <div class="q" role="listitem">
+      <div class="title">1. Столица Австралии?</div>
+      <div role="radiogroup">
+        <label><input type="radio" name="q1" value="a" /> <span>Сидней</span></label>
+        <label><input type="radio" name="q1" value="b" /> <span>Канберра</span></label>
+        <label><input type="radio" name="q1" value="c" /> <span>Мельбурн</span></label>
+      </div>
+    </div>
+
+    <div class="q" role="listitem">
+      <div class="title">2. Какие из этих городов находятся в Европе?</div>
+      <div>
+        <label><input type="checkbox" name="q2" value="a" /> <span>Лиссабон</span></label>
+        <label><input type="checkbox" name="q2" value="b" /> <span>Лима</span></label>
+        <label><input type="checkbox" name="q2" value="c" /> <span>Таллин</span></label>
+        <label><input type="checkbox" name="q2" value="d" /> <span>Осака</span></label>
+      </div>
+    </div>
+
+    <div class="q" role="listitem">
+      <div class="title">3. Самая длинная река в мире?</div>
+      <div>
+        <label><input type="radio" id="r31" name="q3" /> <span>Амазонка</span></label>
+        <label><input type="radio" id="r32" name="q3" /> <span>Нил</span></label>
+        <label for="r32" style="font-size: 12px; opacity: 0.6">(по современным данным — Амазонка)</label>
+      </div>
+    </div>
+
+    <!-- input визуально скрыт, варианты нарисованы CSS — частая ситуация в кастомных темах -->
+    <div class="q" role="listitem">
+      <div class="title">4. Сколько будет 2 + 2 × 2?</div>
+      <div role="radiogroup">
+        <label class="opt"><input type="radio" name="q4" style="display: none" /><span class="dot"></span><span>6</span></label>
+        <label class="opt"><input type="radio" name="q4" style="display: none" /><span class="dot"></span><span>8</span></label>
+        <label class="opt"><input type="radio" name="q4" style="display: none" /><span class="dot"></span><span>4</span></label>
+      </div>
+    </div>
+
+    <script src="mock-chrome.js"></script>
+    <script src="../content.js"></script>
+    <script>
+      setTimeout(() => window.__qcScan && window.__qcScan(), 150);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Quiz Copilot — e2e</title>
+    <style>
+      body {
+        font: 16px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      .q { margin-bottom: 30px; }
+      .title { font-weight: 600; margin-bottom: 8px; }
+      label { display: block; padding: 5px 0; }
+      #probe { font: 14px/1.4 ui-monospace, Consolas, monospace; color: #0f766e; }
+    </style>
+  </head>
+  <body>
+    <h2>E2E: реальная модель через расширение</h2>
+
+    <div class="q">
+      <div class="title">1. Столица Австралии?</div>
+      <div role="radiogroup">
+        <label><input type="radio" name="q1" /> <span>Сидней</span></label>
+        <label><input type="radio" name="q1" /> <span>Канберра</span></label>
+        <label><input type="radio" name="q1" /> <span>Мельбурн</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="title">2. Какие из этих городов находятся в Европе?</div>
+      <div>
+        <label><input type="checkbox" name="q2" /> <span>Лиссабон</span></label>
+        <label><input type="checkbox" name="q2" /> <span>Лима</span></label>
+        <label><input type="checkbox" name="q2" /> <span>Таллин</span></label>
+        <label><input type="checkbox" name="q2" /> <span>Осака</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="title">3. Сколько будет 2 + 2 × 2?</div>
+      <div>
+        <label><input type="radio" name="q3" /> <span>6</span></label>
+        <label><input type="radio" name="q3" /> <span>8</span></label>
+        <label><input type="radio" name="q3" /> <span>4</span></label>
+      </div>
+    </div>
+
+    <div id="probe">marks=…</div>
+
+    <!-- держит событие load, чтобы headless успел снять DOM после ответа модели -->
+    <img src="/slow.png" width="1" height="1" alt="" />
+
+    <script>
+      // ?add=1 — через 4 секунды добавляем четвёртый вопрос.
+      // Старые три должны прийти из кэша, в API уйдёт только новый.
+      if (new URLSearchParams(location.search).has("add")) {
+        setTimeout(() => {
+          const q = document.createElement("div");
+          q.className = "q";
+          q.innerHTML =
+            '<div class="title">4. Чему равно 7 × 8?</div>' +
+            '<div><label><input type="radio" name="q4" /> <span>54</span></label>' +
+            '<label><input type="radio" name="q4" /> <span>56</span></label>' +
+            '<label><input type="radio" name="q4" /> <span>64</span></label></div>';
+          document.body.appendChild(q);
+        }, 4000);
+      }
+    </script>
+
+    <script>
+      const started = Date.now();
+      const timer = setInterval(() => {
+        const host = document.getElementById("__quiz_copilot_overlay");
+        const sr = host && host.shadowRoot;
+        const marks = sr ? sr.querySelectorAll(".mark").length : -1;
+        const pill = sr ? sr.querySelector(".pill") : null;
+
+        document.getElementById("probe").textContent =
+          "host=" + (!!host) +
+          " shadow=" + (!!sr) +
+          " marks=" + marks +
+          " pill=" + (pill ? pill.textContent : "—") +
+          " | " + Math.round((Date.now() - started) / 1000) + "s";
+
+        if (marks > 0) clearInterval(timer);
+      }, 250);
+    </script>
+  </body>
+</html>

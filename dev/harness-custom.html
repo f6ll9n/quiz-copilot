@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Quiz Copilot — custom widgets harness</title>
+    <style>
+      body {
+        font: 16px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 20px;
+        background: #fff;
+        color: #111;
+      }
+      .q { margin-bottom: 34px; }
+      .stem { font-weight: 600; margin-bottom: 10px; }
+      .answers { display: grid; gap: 8px; }
+      .answer {
+        cursor: pointer;
+        padding: 9px 12px;
+        border: 1px solid #d4d4d8;
+        border-radius: 10px;
+        transition: background 0.12s ease;
+      }
+      .answer:hover { background: #f4f4f5; }
+      .answer.picked { background: #dcfce7; border-color: #86efac; }
+    </style>
+  </head>
+  <body>
+    <h2>Тест без input-ов</h2>
+
+    <div class="q">
+      <div class="stem">1. Какой из языков исполняется прямо в браузере?</div>
+      <div class="answers">
+        <div class="answer">Python</div>
+        <div class="answer">JavaScript</div>
+        <div class="answer">C++</div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="stem">2. Что из перечисленного — система контроля версий?</div>
+      <div class="answers">
+        <div class="answer">Docker</div>
+        <div class="answer">Git</div>
+        <div class="answer">Webpack</div>
+        <div class="answer">Nginx</div>
+      </div>
+    </div>
+
+    <script src="mock-chrome.js"></script>
+    <script src="../content.js"></script>
+    <script>
+      // подсветка «выбранного» варианта — чтобы автовыбор был виден на скриншоте
+      document.querySelectorAll(".answer").forEach((el) =>
+        el.addEventListener("click", () => {
+          el.parentElement.querySelectorAll(".answer").forEach((x) => x.classList.remove("picked"));
+          el.classList.add("picked");
+        })
+      );
+      setTimeout(() => window.__qcScan && window.__qcScan(), 150);
+    </script>
+  </body>
+</html>
